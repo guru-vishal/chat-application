@@ -4,7 +4,6 @@ const authMiddleware = require('../middleware/authMiddleware');
 
 const router = express.Router();
 
-// All routes are protected
 router.use(authMiddleware);
 
 router.post('/messages', messageController.sendMessage);

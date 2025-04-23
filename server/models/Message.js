@@ -21,7 +21,6 @@ const MessageSchema = new mongoose.Schema({
   }
 }, { timestamps: true });
 
-// Index for efficient querying of chat history
 MessageSchema.index({ sender: 1, recipient: 1 });
 
 module.exports = mongoose.model('Message', MessageSchema);

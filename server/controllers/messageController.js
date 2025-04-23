@@ -1,6 +1,5 @@
 const Message = require('../models/Message');
 
-// Send a message
 exports.sendMessage = async (req, res) => {
   try {
     const { recipientId, content } = req.body;
@@ -21,7 +20,6 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
-// Get chat history between two users
 exports.getMessages = async (req, res) => {
   try {
     const { userId } = req.params;
@@ -36,8 +34,7 @@ exports.getMessages = async (req, res) => {
     .sort({ createdAt: 1 })
     .populate('sender', 'username profilePic')
     .populate('recipient', 'username profilePic');
-    
-    // Mark messages as read
+
     await Message.updateMany(
       { sender: userId, recipient: currentUserId, read: false },
       { read: true }
