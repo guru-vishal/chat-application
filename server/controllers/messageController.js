@@ -1,6 +1,6 @@
-const Message = require('../models/Message');
+import Message from '../models/Message.js';
 
-exports.sendMessage = async (req, res) => {
+export const sendMessage = async (req, res) => {
   try {
     const { recipientId, content } = req.body;
     const senderId = req.userId;
@@ -20,7 +20,7 @@ exports.sendMessage = async (req, res) => {
   }
 };
 
-exports.getMessages = async (req, res) => {
+export const getMessages = async (req, res) => {
   try {
     const { userId } = req.params;
     const currentUserId = req.userId;

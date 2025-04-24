@@ -1,5 +1,5 @@
-const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs');
+import mongoose from 'mongoose';
+import bcrypt from 'bcryptjs';
 
 const UserSchema = new mongoose.Schema({
   username: {
@@ -21,7 +21,7 @@ const UserSchema = new mongoose.Schema({
   },
   profilePic: {
     type: String,
-    default: 'https://via.placeholder.com/150'
+    default: 'https://i.pinimg.com/736x/9f/4c/f0/9f4cf0f24b376077a2fcdab2e85c3584.jpg'
   },
   isOnline: {
     type: Boolean,
@@ -45,4 +45,6 @@ UserSchema.methods.comparePassword = async function(candidatePassword) {
   return bcrypt.compare(candidatePassword, this.password);
 };
 
-module.exports = mongoose.model('User', UserSchema);
+const User = mongoose.model('User', UserSchema);
+
+export default User;

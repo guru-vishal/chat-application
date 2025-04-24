@@ -1,23 +1,27 @@
-require('dotenv').config();
-const express = require('express');
-const mongoose = require('mongoose');
-const cors = require('cors');
-const http = require('http');
-const socketio = require('socket.io');
-const authRoutes = require('./routes/auth');
-const messageRoutes = require('./routes/messages');
+import express from "express";
+import bodyParser from "body-parser";
+import mongoose from "mongoose";
+import cors from "cors";
+import {Server} from "socket.io";
+import authRoutes from "./routes/auth.js";
+import messageRoutes from "./routes/messages.js";
+import http from "http";
+import env from "dotenv";
+import chatSocket from "./sockets/chat.js";
 
 const app = express();
 const server = http.createServer(app);
-const io = socketio(server, {
+const io = new Server(server, {
   cors: {
     origin: "*",
     methods: ["GET", "POST"]
   }
 });
 
-app.use(cors());
-app.use(express.json());
+env.config();
+
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(express.static('public'));
 
 mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/chatapp').then(() => {
   console.log('Connected to MongoDB');
@@ -28,7 +32,7 @@ mongoose.connect(process.env.MONGO_URI || 'mongodb://localhost:27017/chatapp').t
 app.use('/api', authRoutes);
 app.use('/api', messageRoutes);
 
-require('./sockets/chat')(io);
+chatSocket(io);
 
 app.get('/', (req, res) => {
   res.send('Chat Application API');
